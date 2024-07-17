@@ -1,3 +1,6 @@
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.124/build/three.module.js';
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.124/examples/jsm/controls/OrbitControls.js';
+
 console.log("Script started");
 
 // Set up the scene
@@ -42,7 +45,7 @@ camera.position.z = 5;
 console.log("Camera positioned");
 
 // Ensure OrbitControls is loaded before use
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true; // an option for smoother control
 controls.dampingFactor = 0.25; // damping factor for smoothing
 controls.enableZoom = true; // enable zooming
