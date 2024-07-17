@@ -1,11 +1,9 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.124/build/three.module.js';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.124/examples/jsm/controls/OrbitControls.js';
 
-console.log("Script started");
 
 // Set up the scene
 const scene = new THREE.Scene();
-console.log("Scene created");
 
 // Set up the camera
 const camera = new THREE.PerspectiveCamera(
@@ -14,13 +12,11 @@ const camera = new THREE.PerspectiveCamera(
     0.1, // Near clipping plane
     1000 // Far clipping plane
 );
-console.log("Camera created");
 
 // Set up the renderer
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
-console.log("Renderer created and added to DOM");
 
 // Set renderer background color to make sure we see the cube
 renderer.setClearColor(0xaaaaaa);
@@ -32,31 +28,26 @@ const cube = new THREE.Mesh(geometry, material);
 
 // Add the cube to the scene
 scene.add(cube);
-console.log("Cube created and added to scene");
 
 // Add a directional light
 const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(0, 1, 1).normalize();
 scene.add(light);
-console.log("Directional light added to scene");
 
 // Position the camera
 camera.position.z = 5;
-console.log("Camera positioned");
 
 // Ensure OrbitControls is loaded before use
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true; // an option for smoother control
 controls.dampingFactor = 0.25; // damping factor for smoothing
 controls.enableZoom = true; // enable zooming
-console.log("OrbitControls set up");
 
 // Handle window resize
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    console.log("Window resized");
 });
 
 // Create an animation loop
@@ -72,4 +63,3 @@ function animate() {
 
 // Start the animation loop
 animate();
-console.log("Animation started");
