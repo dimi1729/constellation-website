@@ -15,9 +15,28 @@
     </head>
 
     <body>
-        <h1>YOUR MOM</h1>
+        <h1>Constellation Rotator</h1>
         <hr>
-        <p>Frfr</p>
+        <p>While from the point of view of Earth constellations look like a two dimensional image, constellations are
+            actually 3D, and can look different from different points of view. This website allows for rotating constellations
+            around and seeing how they could look like from other points in space.
+        </p>
+        <form id="select-constellation" action="" method="post">
+            <div>
+                <label>Use the selection below to pick which interactive constellation you would like to see</label>
+
+                <input type="radio" id="cube" name="shape" value="cube">
+                <label for="cube">Cube</label>
+
+                <input type="radio" id="sphere" name="shape" value="sphere">
+                <label for="sphere">Sphere</label>
+            </div>
+
+            <div>
+                <button id="generate">Generate</button>
+            </div>
+
+        </form>
 
 
         <script type="module" src="script.js" charset="utf-8"></script>

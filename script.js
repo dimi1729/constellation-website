@@ -1,7 +1,6 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.124/build/three.module.js';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.124/examples/jsm/controls/OrbitControls.js';
 
-
 // Set up the scene
 const scene = new THREE.Scene();
 
@@ -22,12 +21,23 @@ document.body.appendChild(renderer.domElement);
 renderer.setClearColor(0xaaaaaa);
 
 // Create a geometry and a material, then combine them into a mesh
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
+let currentShape;
 
-// Add the cube to the scene
-scene.add(cube);
+// Function to create a cube
+function createCube() {
+    const geometry = new THREE.BoxGeometry();
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const cube = new THREE.Mesh(geometry, material);
+    return cube;
+}
+
+// Function to create a sphere
+function createSphere() {
+    const geometry = new THREE.SphereGeometry(1, 32, 32);
+    const material = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+    const sphere = new THREE.Mesh(geometry, material);
+    return sphere;
+}
 
 // Add a directional light
 const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -37,7 +47,7 @@ scene.add(light);
 // Position the camera
 camera.position.z = 5;
 
-// Ensure OrbitControls is loaded before use
+// Set up OrbitControls
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true; // an option for smoother control
 controls.dampingFactor = 0.25; // damping factor for smoothing
@@ -49,6 +59,23 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+// Function to update the shape in the scene
+function updateShape(shapeType) {
+    if (currentShape) {
+        scene.remove(currentShape);
+    }
+
+    if (shapeType === 'cube') {
+        currentShape = createCube();
+    } else if (shapeType === 'sphere') {
+        currentShape = createSphere();
+    }
+
+    if (currentShape) {
+        scene.add(currentShape);
+    }
+}
 
 // Create an animation loop
 function animate() {
@@ -63,3 +90,10 @@ function animate() {
 
 // Start the animation loop
 animate();
+
+// Handle form submission
+document.getElementById('generate').addEventListener('click', (event) => {
+    event.preventDefault();
+    const selectedShape = document.querySelector('input[name="shape"]:checked').value;
+    updateShape(selectedShape);
+});
