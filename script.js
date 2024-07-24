@@ -71,12 +71,7 @@ async function updateShape(shapeType) {
         scene.remove(currentShape);
     }
 
-    let modelUrl;
-    if (shapeType === 'cube') {
-        modelUrl = 'test_gltfs/rock.glb';
-    } else if (shapeType === 'sphere') {
-        modelUrl = 'test_gltfs/strawberry.gltf';
-    }
+    let modelUrl = 'test_gltfs/' + shapeType + ".gltf";
 
     if (modelUrl) {
         currentShape = await loadModel(modelUrl);
