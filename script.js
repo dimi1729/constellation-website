@@ -1,5 +1,6 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.124/build/three.module.js';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.124/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.124/examples/jsm/loaders/GLTFLoader.js';
 
 // Set up the scene
 const scene = new THREE.Scene();
@@ -20,23 +21,20 @@ document.body.appendChild(renderer.domElement);
 // Set renderer background color to make sure we see the cube
 renderer.setClearColor(0xaaaaaa);
 
-// Create a geometry and a material, then combine them into a mesh
+// Create the GLTF loader
+const loader = new GLTFLoader();
+
 let currentShape;
 
-// Function to create a cube
-function createCube() {
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    return cube;
-}
-
-// Function to create a sphere
-function createSphere() {
-    const geometry = new THREE.SphereGeometry(1, 32, 32);
-    const material = new THREE.MeshBasicMaterial({ color: 0x0000ff });
-    const sphere = new THREE.Mesh(geometry, material);
-    return sphere;
+// Function to load a GLB model
+function loadModel(url) {
+    return new Promise((resolve, reject) => {
+        loader.load(url, (gltf) => {
+            resolve(gltf.scene);
+        }, undefined, (error) => {
+            reject(error);
+        });
+    });
 }
 
 // Add a directional light
@@ -60,21 +58,33 @@ window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
+// Function to reset the camera
+function resetCamera() {
+    camera.position.set(0, 0, 5);
+    camera.rotation.set(0, 0, 0);
+    controls.update();
+}
+
 // Function to update the shape in the scene
-function updateShape(shapeType) {
+async function updateShape(shapeType) {
     if (currentShape) {
         scene.remove(currentShape);
     }
 
+    let modelUrl;
     if (shapeType === 'cube') {
-        currentShape = createCube();
+        modelUrl = 'test_gltfs/rock.glb';
     } else if (shapeType === 'sphere') {
-        currentShape = createSphere();
+        modelUrl = 'test_gltfs/strawberry.gltf';
     }
 
-    if (currentShape) {
+    if (modelUrl) {
+        currentShape = await loadModel(modelUrl);
         scene.add(currentShape);
     }
+
+    // Reset the camera after updating the shape
+    resetCamera();
 }
 
 // Create an animation loop
